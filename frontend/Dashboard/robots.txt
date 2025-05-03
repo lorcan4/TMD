@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /dashboard
+Disallow: /adminBlog
+Disallow: /storeDash
+Disallow: /dash-comments
+Disallow: /dash-table
+Disallow: /News
