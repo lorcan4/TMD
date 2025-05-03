@@ -245,10 +245,40 @@
             border-radius: 8px;
             font-weight: 600;
         }
+        .arrow-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 1.2rem;
+            z-index: 100;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .arrow-button:hover {
+            transform: scale(1.1);
+            background: white;
+            color: var(--primary);
+        }
     </style>
 </head>
 
 <body>
+    <a href="/">
+        <button class="arrow-button" aria-label="Go back">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+    </a>
     <div class="container">
         <h1>Choose Your Perfect Plan</h1>
         <p class="subtitle">Select a membership to get started</p>
