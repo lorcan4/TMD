@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Schedule</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="56x56"
+    href="../images/fav-icon/Black White Minimalist Professional Initial Logo.png">
+    <style>
+        :root {
+            --primary: #7B2CBF;
+            --primary-light: #9D4EDD;
+            --secondary: #2D6A9F;
+            --secondary-light: #4A9FE0;
+            --accent: #FF6B6B;
+            --light: #F8F9FA;
+            --dark: #212529;
+            --gray: #ADB5BD;
+          }
+          
+        body {
+            background-color: #f8f9fa;
+            background-color: #171819;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    
+        .schedule-container {
+            background-color: #171819;
+            color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            overflow-x: auto;
+        }
+    
+        .schedule-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 600px;
+        }
+    
+        .schedule-table th {
+            background-color: #f13a11;
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+    
+        .schedule-table td {
+            padding: 1rem;
+            border: 1px solid #2c2a2a;
+            vertical-align: middle;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+    
+        .time-cell {
+            background-color: #f13a11 !important;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+    
+        .workout-cell {
+            cursor: pointer;
+        }
+    
+        .workout-name {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+    
+        .workout-time {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+    
+        .nav-link {
+            color: #f13a11;
+            font-weight: bold;
+        }
+    
+        /* Responsive tweaks for phones and tablets */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+    
+            .schedule-container {
+                padding: 1rem;
+            }
+    
+            .schedule-table th,
+            .schedule-table td {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+    
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+            /* Fixed Back Arrow */
+    .arrow-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        color: var(--primary);
+        font-size: 1.2rem;
+        z-index: 100;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+  
+      .arrow-button:hover {
+        transform: scale(1.05);
+        background: var(--primary);
+        color: white;
+      }
+          /* Footer */
+    footer {
+        text-align: center;
+        margin-top: 2rem;
+        color: var(--gray);
+        font-size: 0.9rem;
+      }
+  
+      footer a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container py-5">
+      <a href="/"> <button class="arrow-button" aria-label="Go back">
+            <i class="fas fa-arrow-left"></i>
+          </button></a> <br><br>
+        <h1 class="text-center mb-4" style="color: #f8f9fa; font-weight: bold;">Weekly Workout Schedule </h1>
+        <p style="color: #666262; font-weight: bold; text-align:center;">Stay consistent and track your training sessions throughout the week</p>
+        <div class="schedule-container">
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th><i class="fa fa-calendar"></i></th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                        <th>Saturday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% const timeSlots = ['Morning', 'Afternoon', 'Evening', 'Night']; %>
+                    <% timeSlots.forEach(time => { %>
+                        <tr>
+                            <td class="time-cell"><%= time %></td>
+                            <% ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].forEach(day => { %>
+                                <% const workout = workouts.find(w => w.day === day && w.time === time); %>
+                                <% if (workout) { %>
+                                    <td class="workout-cell">
+                                        <div class="workout-name"><%= workout.name %></div>
+                                        <div class="workout-time"><%= workout.timeRange %></div>
+                                    </td>
+                                <% } else { %>
+                                    <td></td>
+                                <% } %>
+                            <% }); %>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer>
+        Made with <i class="fas fa-heart" style="color: var(--accent);"></i> by 
+        <a href="#" target="_blank" rel="noopener">TMD</a>
+      </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

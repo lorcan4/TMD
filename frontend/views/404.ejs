@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found | ELITE FITNESS</title>
+    <link rel="icon" type="image/png" sizes="56x56"
+    href="../images/fav-icon/Black White Minimalist Professional Initial Logo.png">
+    <style>
+        /* Gym-themed 404 Page */
+        :root {
+            --primary: #FF5E14;  /* Gym accent orange */
+            --dark: #1E1E1E;     /* Dark background */
+            --light: #F8F9FA;    /* Light text */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            background: var(--dark);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: url('../images//home/photo-1571019614242-c5c5dee9f50b.avif');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+        }
+
+        .error-container {
+            max-width: 800px;
+            padding: 2rem;
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            margin: 0;
+            color: var(--primary);
+            line-height: 1;
+            position: relative;
+        }
+
+        .error-code::after {
+            content: '404';
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: rgba(255, 94, 20, 0.2);
+            z-index: -1;
+            font-size: 12rem;
+            transform: translate(-20px, -20px);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 1rem 0;
+            text-transform: uppercase;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            margin: 0.5rem;
+            transition: all 0.3s;
+            border: 2px solid var(--primary);
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .secondary-button {
+            background: transparent;
+            border-color: white;
+            color: white;
+        }
+
+        .secondary-button:hover {
+            background: white;
+            color: var(--dark);
+        }
+
+        .gym-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 5rem;
+            }
+            
+            .error-code::after {
+                font-size: 8rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="gym-icon">
+            <i class="fas fa-dumbbell"></i>
+        </div>
+        <h1 class="error-code">404</h1>
+        <h1>PAGE NOT FOUND</h1>
+        <p>Looks like you've hit a roadblock in your workout journey. The page you're looking for doesn't exist or has been moved.</p>
+        <div>
+            <a href="/" class="cta-button">RETURN TO HOME</a>
+            <a href="/Contact" class="cta-button secondary-button">GET HELP</a>
+        </div>
+    </div>
+
+    <!-- Font Awesome for the dumbbell icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</body>
+</html>

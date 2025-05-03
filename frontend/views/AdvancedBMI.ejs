@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced BMI Calculator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" sizes="56x56"
+    href="../images/fav-icon/Black White Minimalist Professional Initial Logo.png">
+    <style>
+        :root {
+            --primary: #8A2BE2;
+            --primary-light: #9B59B6;
+            --secondary: #3498DB;
+            --accent: #FF6B6B;
+            --light: #F8F9FA;
+            --dark: #2C3E50;
+            --success: #2ECC71;
+            --warning: #F39C12;
+            --danger: #E74C3C;
+            --gray: #95A5A6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Glassmorphism Container */
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(138,43,226,0.1) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+            animation: rotate 15s linear infinite;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Header */
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.8rem;
+            text-align: center;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            border: 2px solid rgba(140, 140, 140, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.2);
+        }
+
+        /* Button */
+        button[type="submit"] {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(45deg, var(--primary), var(--primary-light));
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button[type="submit"]::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4);
+        }
+
+        button[type="submit"]:hover::before {
+            left: 100%;
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        /* Results */
+        #result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: left;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* BMI Category Colors */
+        .underweight {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        .normal {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .overweight {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        .obesity {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        /* Back Button */
+        .arrow-button {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            color: var(--primary);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+            border: none;
+            cursor: pointer;
+        }
+
+        .arrow-button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(-3px);
+        }
+
+        /* Floating Elements */
+        .floating {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .floating:nth-child(1) {
+            background: var(--primary);
+            width: 200px;
+            height: 200px;
+            top: -50px;
+            right: -50px;
+        }
+
+        .floating:nth-child(2) {
+            background: var(--secondary);
+            width: 150px;
+            height: 150px;
+            bottom: -30px;
+            left: -30px;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 8s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="floating"></div>
+    <div class="floating"></div>
+
+    <div class="container">
+        <!-- Back Button -->
+        <button class="arrow-button" onclick="window.location.href='/'">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+
+        <h1>Advanced BMI Calculator</h1>
+        
+        <form id="bmiForm">
+            <div class="form-group">
+                <label for="name">First Name</label>
+                <input type="text" id="name" name="name" required placeholder="Enter your first name">
+            </div>
+            
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <input type="text" id="lastname" name="lastname" required placeholder="Enter your last name">
+            </div>
+            
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" required min="1" placeholder="Your age in years">
+            </div>
+            
+            <div class="form-group">
+                <label for="height">Height (cm)</label>
+                <input type="number" id="height" name="height" required min="50" placeholder="Your height in centimeters">
+            </div>
+            
+            <div class="form-group">
+                <label for="weight">Weight (kg)</label>
+                <input type="number" id="weight" name="weight" required min="10" placeholder="Your weight in kilograms">
+            </div>
+            
+            <button type="submit">
+                <i class="fas fa-calculator" style="margin-right: 8px;"></i> Calculate BMI & Generate PDF
+            </button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('bmiForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const lastname = document.getElementById('lastname').value.trim();
+            const age = parseInt(document.getElementById('age').value);
+            const height = parseFloat(document.getElementById('height').value) / 100;
+            const weight = parseFloat(document.getElementById('weight').value);
+
+            if (!name || !lastname || isNaN(age) || isNaN(height) || isNaN(weight) || age <= 0 || height <= 0 || weight <= 0) {
+                // Animate input field to show error
+                const inputs = document.querySelectorAll('input');
+                inputs.forEach(input => {
+                    input.style.borderColor = 'var(--danger)';
+                    setTimeout(() => {
+                        input.style.borderColor = 'rgba(140, 140, 140, 0.2)';
+                    }, 1000);
+                });
+                return;
+            }
+
+            const bmi = (weight / (height * height)).toFixed(2);
+            let category = '';
+            let advice = '';
+            let categoryClass = '';
+
+            if (bmi < 18.5) {
+                category = 'Underweight';
+                advice = 'You should consider gaining weight through a balanced diet and exercise.';
+                categoryClass = 'underweight';
+            } else if (bmi >= 18.5 && bmi < 24.9) {
+                category = 'Normal weight';
+                advice = 'Keep up the good work! Maintain a healthy diet and exercise regularly.';
+                categoryClass = 'normal';
+            } else if (bmi >= 25 && bmi < 29.9) {
+                category = 'Overweight';
+                advice = 'Consider losing weight through a healthy diet and regular exercise.';
+                categoryClass = 'overweight';
+            } else {
+                category = 'Obesity';
+                advice = 'It is recommended to consult a healthcare professional for a weight management plan.';
+                categoryClass = 'obesity';
+            }
+
+            // Display result with beautiful formatting
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `
+                <h3 style="margin-bottom: 1rem; color: var(--primary);">Your BMI Results</h3>
+                <p><strong>Name:</strong> ${name} ${lastname}</p>
+                <p><strong>Age:</strong> ${age} years</p>
+                <p><strong>Height:</strong> ${(height*100).toFixed(0)} cm</p>
+                <p><strong>Weight:</strong> ${weight} kg</p>
+                <p style="margin: 1rem 0;"><strong>BMI:</strong> <span class="${categoryClass}">${bmi} (${category})</span></p>
+                <p><strong>Health Advice:</strong> ${advice}</p>
+            `;
+
+            // Generate PDF
+            generatePDF(name, lastname, age, height * 100, weight, bmi, category, advice);
+        });
+
+        function generatePDF(name, lastname, age, height, weight, bmi, category, advice) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add decorative header
+            doc.setFillColor(255, 255, 255);
+            doc.rect(0, 0, 210, 30, 'F');
+            
+            // Add title
+            doc.setFontSize(30);
+            doc.setTextColor(0, 0, 0);
+            doc.setFont('helvetica', 'bold');
+            doc.text("BMI Report", 105, 20, { align: 'center' });
+
+            // Reset text color
+            doc.setTextColor(0, 0, 0);
+
+            // Add user details
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text("Personal Information", 15, 45);
+            
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.text(`Name: ${name} ${lastname}`, 15, 55);
+            doc.text(`Age: ${age} years`, 15, 62);
+            doc.text(`Height: ${height} cm`, 15, 69);
+            doc.text(`Weight: ${weight} kg`, 15, 76);
+
+            // Add BMI results
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text("BMI Results", 15, 90);
+            
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.text(`Your BMI: ${bmi}`, 15, 100);
+            
+            // Color code the category
+            if (category === 'Underweight') {
+                doc.setTextColor(243, 156, 18); // Orange
+            } else if (category === 'Normal weight') {
+                doc.setTextColor(46, 204, 113); // Green
+            } else if (category === 'Overweight') {
+                doc.setTextColor(243, 156, 18); // Orange
+            } else {
+                doc.setTextColor(231, 76, 60); // Red
+            }
+            
+            doc.text(`Category: ${category}`, 15, 107);
+            doc.setTextColor(0, 0, 0); // Reset color
+
+            // Add advice
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text("Health Advice", 15, 125);
+            
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.text(advice, 15, 135, { maxWidth: 180 });
+
+            // Add footer
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text("Generated by TMD Fitness Center", 105, 290, { align: 'center' });
+
+            // Save PDF
+            doc.save(`${name}_${lastname}_BMI_Report.pdf`);
+
+            // Show success animation
+            showSuccessAnimation();
+        }
+
+        function showSuccessAnimation() {
+            const checkmark = document.createElement('div');
+            checkmark.style.position = 'fixed';
+            checkmark.style.top = '50%';
+            checkmark.style.left = '50%';
+            checkmark.style.transform = 'translate(-50%, -50%)';
+            checkmark.style.width = '100px';
+            checkmark.style.height = '100px';
+            checkmark.style.backgroundColor = 'var(--success)';
+            checkmark.style.borderRadius = '50%';
+            checkmark.style.display = 'flex';
+            checkmark.style.alignItems = 'center';
+            checkmark.style.justifyContent = 'center';
+            checkmark.style.color = 'white';
+            checkmark.style.fontSize = '50px';
+            checkmark.style.zIndex = '1000';
+            checkmark.style.boxShadow = '0 0 30px rgba(46, 204, 113, 0.5)';
+            checkmark.innerHTML = '<i class="fas fa-check"></i>';
+            document.body.appendChild(checkmark);
+
+            // Animate
+            checkmark.animate([
+                { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 },
+                { transform: 'translate(-50%, -50%) scale(1.2)', opacity: 1 },
+                { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 }
+            ], {
+                duration: 500,
+                easing: 'ease-out'
+            });
+
+            // Remove after animation
+            setTimeout(() => {
+                checkmark.animate([
+                    { opacity: 1 },
+                    { opacity: 0 }
+                ], {
+                    duration: 300,
+                    easing: 'ease-in'
+                }).onfinish = () => checkmark.remove();
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

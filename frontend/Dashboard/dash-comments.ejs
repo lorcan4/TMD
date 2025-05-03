@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --dark-bg: #171819;
+            --card-bg: #2d2d2d;
+            --card-hover: #3d3d3d;
+            --text-light: #f8f9fa;
+            --danger: #dc3545;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 70px;
+        }
+        
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .dashboard-card:hover {
+            background: var(--card-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        
+        .table-responsive::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .table-responsive::-webkit-scrollbar-track {
+            background: var(--card-bg);
+        }
+        
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 4px;
+        }
+        
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #777;
+        }
+        
+        .arrow-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 1.2rem;
+            z-index: 100;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .arrow-button:hover {
+            transform: scale(1.1);
+            background: white;
+            color: var(--primary);
+        }
+        
+        .dashboard-header {
+            border-bottom: 1px solid #444;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .badge {
+            font-weight: 500;
+            padding: 5px 10px;
+        }
+        
+        .btn-outline-danger {
+            transition: all 0.3s;
+        }
+        
+        .btn-outline-danger:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="/dashboard-Admin03">
+        <button class="arrow-button" aria-label="Go back">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+    </a>
+
+    <div class="container py-4">
+        <div class="dashboard-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1><i class="fas fa-comments me-2"></i>Comments Dashboard</h1>
+                <a href="/Comments" class="btn btn-outline-light">
+                    <i class="fas fa-external-link-alt me-1"></i> View Comments Page
+                </a>
+            </div>
+        </div>
+        
+        <div class="dashboard-card">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Workout Type</th>
+                            <th>Comment</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% comments.forEach(comment => { %>
+                            <tr>
+                                <td><%= comment.username %></td>
+                                <td><span class="badge bg-danger"><%= comment.workoutType %></span></td>
+                                <td><%= comment.text %></td>
+                                <td><%= comment.createdAt.toLocaleString() %></td>
+                                <td>
+                                    <form method="POST" action="/admin/delete-comment" class="d-inline">
+                                        <input type="hidden" name="commentId" value="<%= comment._id %>">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash me-1"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

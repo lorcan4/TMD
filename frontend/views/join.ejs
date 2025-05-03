@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join Our Community | TMD</title>
+  <style>
+    /* Modern Color Palette */
+    :root {
+      --primary: #7B2CBF;
+      --primary-light: #9D4EDD;
+      --secondary: #2D6A9F;
+      --secondary-light: #4A9FE0;
+      --accent: #FF6B6B;
+      --light: #F8F9FA;
+      --dark: #212529;
+      --gray: #ADB5BD;
+    }
+
+    /* Base Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #F5F7FA, #FFFFFF);
+      min-height: 100vh;
+      color: var(--dark);
+      line-height: 1.6;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Main Layout */
+    .main-wrapper {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-top: 70px; /* Space for fixed arrow */
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    @media (min-width: 992px) {
+      .main-wrapper {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 60px;
+        min-height: calc(100vh - 90px);
+      }
+    }
+
+    /* Image Section - Now perfectly responsive */
+    .image-wrapper {
+      flex: 1;
+      max-width: 600px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    #image-container {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      aspect-ratio: 1.5; /* Maintain image aspect ratio */
+    }
+
+    #image-canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 16px;
+    }
+
+    /* Form Section */
+    .form-container {
+      flex: 1;
+      max-width: 500px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      margin: 0 auto;
+    }
+
+    /* Typography */
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.25rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1.75rem;
+      text-align: center;
+    }
+
+    /* Form Elements */
+    .input-group {
+      margin-bottom: 1.75rem;
+    }
+
+    #name-input {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      border: 2px solid rgba(140, 140, 140, 0.15);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s ease;
+    }
+
+    #name-input:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(123, 44, 191, 0.2);
+    }
+
+    #add-text-btn {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #add-text-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(123, 44, 191, 0.3);
+    }
+
+    /* Fixed Back Arrow */
+    .arrow-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      color: var(--primary);
+      font-size: 1.2rem;
+      z-index: 100;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .arrow-button:hover {
+      transform: scale(1.05);
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1200px) {
+      .main-wrapper {
+        gap: 40px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .main-wrapper {
+        padding-top: 60px;
+        gap: 30px;
+      }
+      
+      .form-container {
+        max-width: 450px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+      
+      .form-container {
+        padding: 2rem;
+      }
+      
+      .arrow-button {
+        width: 45px;
+        height: 45px;
+        top: 15px;
+        left: 15px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .form-container {
+        padding: 1.75rem;
+      }
+      
+      #name-input, #add-text-btn {
+        padding: 0.9rem 1.25rem;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-container > * {
+      animation: fadeIn 0.5s forwards;
+    }
+
+    h1 { animation-delay: 0.1s; }
+    .input-group { animation-delay: 0.2s; }
+    #add-text-btn { animation-delay: 0.3s; }
+    footer { animation-delay: 0.4s; }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/png" sizes="56x56"
+  href="../images/fav-icon/Black White Minimalist Professional Initial Logo.png">
+</head>
+
+<body>
+  <!-- Fixed Back Arrow -->
+  <button class="arrow-button" aria-label="Go back">
+    <i class="fas fa-arrow-left"></i>
+  </button>
+
+  <div class="main-wrapper">
+    <!-- Image Section -->
+    <div class="image-wrapper">
+      <div id="image-container">
+        <img id="fixed-image" src="../images/home/Untitled design.png" alt="Community Badge Template" style="display: none;">
+        <canvas id="image-canvas"></canvas>
+      </div>
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-container">
+      <h1>Join Our Community</h1>
+
+      <div class="input-group">
+        <input type="text" id="name-input" placeholder="Enter your name (max 14 letters)" maxlength="14">
+      </div>
+
+      <button id="add-text-btn">
+        <i class="fas fa-plus-circle" style="margin-right: 8px;"></i> Create Your Badge
+      </button>
+
+      <footer>
+        Made with <i class="fas fa-heart" style="color: var(--accent);"></i> by 
+        <a href="#" target="_blank" rel="noopener">TMD</a>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const nameInput = document.getElementById('name-input');
+    const addTextBtn = document.getElementById('add-text-btn');
+    const canvas = document.getElementById('image-canvas');
+    const ctx = canvas.getContext('2d');
+    const fixedImage = document.getElementById('fixed-image');
+    const arrowButton = document.querySelector('.arrow-button');
+    const imageContainer = document.getElementById('image-container');
+
+    // Back Button Functionality
+    arrowButton.addEventListener('click', () => {
+      window.location.href = '/';
+    });
+
+    // Initialize Canvas with responsive sizing
+    function initCanvas() {
+      if (!fixedImage.complete) return;
+      
+      // Set canvas dimensions to match image
+      canvas.width = fixedImage.naturalWidth;
+      canvas.height = fixedImage.naturalHeight;
+      
+      // Draw image
+      ctx.drawImage(fixedImage, 0, 0);
+      
+      // Add watermark
+      ctx.font = '14px Inter';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+      ctx.textAlign = 'right';
+      ctx.fillText('@TMD Community', canvas.width - 20, canvas.height - 20);
+      
+      // Set initial display size
+      resizeCanvas();
+    }
+
+    // Responsive canvas resizing
+    function resizeCanvas() {
+      if (!fixedImage.complete) return;
+      
+      const containerWidth = imageContainer.clientWidth;
+      const aspectRatio = canvas.width / canvas.height;
+      const displayHeight = containerWidth / aspectRatio;
+      
+      canvas.style.width = `${containerWidth}px`;
+      canvas.style.height = `${displayHeight}px`;
+    }
+
+    // Handle image load
+    fixedImage.onload = initCanvas;
+    fixedImage.onerror = () => console.error('Error loading image');
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+    });
+
+    // Generate Badge
+    addTextBtn.addEventListener('click', function() {
+      const name = nameInput.value.trim();
+      
+      if (!name) {
+        // Show error animation
+        nameInput.style.borderColor = 'var(--accent)';
+        nameInput.animate([
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(-5px)' },
+          { transform: 'translateX(5px)' },
+          { transform: 'translateX(0)' }
+        ], { duration: 300 });
+        
+        setTimeout(() => {
+          nameInput.style.borderColor = 'rgba(140, 140, 140, 0.15)';
+        }, 1000);
+        return;
+      }
+
+      // Redraw base image
+      ctx.drawImage(fixedImage, 0, 0);
+      
+      // Add name text
+      ctx.font = 'bold 42px "Dancing Script", cursive';
+      ctx.fillStyle = 'var(--dark)';
+      ctx.textAlign = 'right';
+      ctx.fillText(name, canvas.width - 30, 40);
+      
+      // Add decorative dot
+      ctx.beginPath();
+      ctx.arc(canvas.width - 30, 60, 8, 0, Math.PI * 2);
+      ctx.fillStyle = 'var(--primary)';
+      ctx.fill();
+      
+      // Clear input
+      nameInput.value = "";
+      
+      // Download image
+      setTimeout(() => {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/jpeg', 0.9);
+        link.download = `TMD-Community-${name || 'member'}.jpg`;
+        link.click();
+      }, 300);
+    });
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      if (fixedImage.complete) {
+        initCanvas();
+      }
+    });
+  </script>
+</body>
+</html>

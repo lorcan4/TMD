@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gym Community Wall</title>
+
+  <!-- Bootstrap + Material Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="icon" type="image/png" sizes="56x56"
+  href="../images/fav-icon/Black White Minimalist Professional Initial Logo.png">
+
+  <style>
+    body {
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+      url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1075&q=80');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      min-height: 100vh;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+
+    .comment-card {
+      transition: all 0.3s;
+    }
+
+    .comment-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .comment-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
+    .comment-icon.male {
+      background-color: rgba(26, 115, 232, 0.1);
+      color: #1a73e8;
+    }
+
+    .comment-icon.female {
+      background-color: rgba(233, 30, 99, 0.1);
+      color: #e91e63;
+    }
+
+    .workout-badge {
+      background: rgba(241, 58, 17, 0.2);
+      border: 1px solid #f13a11;
+    }
+
+    .gender-badge-male {
+      background: rgba(17, 109, 241, 0.2);
+      border: 1px solid #116df1;
+    }
+
+    .gender-badge-female {
+      background: rgba(241, 17, 196, 0.2);
+      border: 1px solid #f111c4;
+    }
+
+    .gender-selection {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .gender-option {
+      flex: 1;
+      text-align: center;
+    }
+
+    .gender-radio {
+      display: none;
+    }
+
+    .gender-label {
+      display: block;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .gender-radio:checked + .gender-label {
+      border-color: white;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .male-label {
+      background: rgba(17, 109, 241, 0.1);
+    }
+
+    .female-label {
+      background: rgba(241, 17, 196, 0.1);
+    }
+
+    .arrow-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 50px;
+      height: 50px;
+      background: rgb(72, 68, 68);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      color: white;
+      font-size: 1.2rem;
+      z-index: 100;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .arrow-button:hover {
+      transform: scale(1.05);
+      background: var(--primary);
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: #ADB5BD;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #7B2CBF;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    input.form-control::placeholder,
+    textarea::placeholder {
+      color: white;
+      opacity: 0.7;
+    }
+
+    .admin-link {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/">
+    <button class="arrow-button" aria-label="Go back">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+  </a>
+  
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="glass-card p-4 mb-4">
+          <h1 class="text-center mb-4" style="font-weight: bold;">
+            <i class="fas fa-dumbbell me-2"></i>Gym Community Wall
+          </h1>
+          <p class="text-center mb-4">Share your workout experiences and motivate others!</p>
+
+          <form method="POST" action="/comment" class="glass-card p-4 mb-5">
+            <div class="mb-3">
+              <input type="text" class="form-control bg-transparent text-white" name="username" placeholder="Your Name" required>
+            </div>
+
+            <!-- Gender Selection -->
+            <div class="gender-selection">
+              <div class="gender-option">
+                <input type="radio" id="male" name="gender" value="male" class="gender-radio" checked>
+                <label for="male" class="gender-label male-label">
+                  <i class="fas fa-mars me-2"></i>Male
+                </label>
+              </div>
+              <div class="gender-option">
+                <input type="radio" id="female" name="gender" value="female" class="gender-radio">
+                <label for="female" class="gender-label female-label">
+                  <i class="fas fa-venus me-2"></i>Female
+                </label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <select class="form-select bg-transparent text-white" name="workoutType" required>
+                <option value="" disabled selected>Select Workout Type</option>
+                <option value="Weight Lifting">Weight Lifting</option>
+                <option value="Cardio">Cardio</option>
+                <option value="CrossFit">CrossFit</option>
+                <option value="Yoga">Yoga</option>
+                <option value="Calisthenics">Calisthenics</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <textarea class="form-control bg-transparent text-white" name="text" rows="3" placeholder="Share your experience..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-danger w-100">Post Comment</button>
+          </form>
+
+          <div class="comments-section">
+            <h3 class="mb-4"><i class="fas fa-comments me-2"></i>Recent Posts</h3>
+
+            <% if (comments.length === 0) { %>
+              <div class="glass-card p-5 text-center">
+                <i class="far fa-comment-dots fa-3x mb-3"></i>
+                <h4>No comments yet</h4>
+                <p>Be the first to share your workout story!</p>
+              </div>
+            <% } else { %>
+              <% comments.forEach(comment => { %>
+                <div class="glass-card comment-card p-4 mb-3 d-flex">
+                  <div class="comment-icon <%= comment.gender === 'male' ? 'male' : 'female' %>">
+                    <i class="material-icons">account_circle</i>
+                  </div>
+                  <div class="w-100">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <div>
+                        <span class="fw-bold"><%= comment.username %></span>
+                        <span class="badge <%= comment.gender === 'male' ? 'gender-badge-male' : 'gender-badge-female' %> ms-2">
+                          <i class="fas <%= comment.gender === 'male' ? 'fa-mars' : 'fa-venus' %> me-1"></i>
+                          <%= comment.gender === 'male' ? 'Male' : 'Female' %>
+                        </span>
+                        <span class="badge workout-badge ms-2"><%= comment.workoutType %></span>
+                      </div>
+                      <small class="text-white-50"><%= comment.createdAt.toLocaleDateString() %></small>
+                    </div>
+                    <p class="mb-0"><%= comment.text %></p>
+                  </div>
+                </div>
+              <% }); %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="/" class="admin-link btn btn-dark">
+    <i class="fas fa-user"></i> Contact us
+  </a>
+
+  <footer>
+    Made with <i class="fas fa-heart" style="color: var(--accent);"></i> by 
+    <a href="#" target="_blank" rel="noopener">TMD</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

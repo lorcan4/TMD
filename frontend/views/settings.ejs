@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PowerFit Gym - Admin Settings</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/png" sizes="56x56"
+  href="../images/fav-icon/Black White Minimalist Professional Initial Logo.png">
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #e74c3c;
+      --accent: #3498db;
+      --light: #ecf0f1;
+      --dark: #2c3e50;
+      --success: #2ecc71;
+      --warning: #f39c12;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./images/home/photo-1571019613454-1cb2f99b2d8b.avif') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--light);
+      padding: 20px;
+    }
+    
+    .settings-container {
+      background: rgba(44, 62, 80, 0.95);
+      padding: 2rem;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      margin: 20px 0;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .header h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .header p {
+      font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+    
+    .header h1 i {
+      font-size: clamp(1.5rem, 4vw, 1.8rem);
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .tab {
+      padding: 0.8rem 1.2rem;
+      cursor: pointer;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+      transition: all 0.3s;
+      border-bottom: 3px solid transparent;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      white-space: nowrap;
+    }
+    
+    .tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .success, .error {
+      background: rgba(46, 204, 113, 0.2);
+      color: var(--light);
+      padding: 0.8rem;
+      border-radius: 5px;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      border-left: 4px solid var(--success);
+    }
+    
+    .error {
+      background: rgba(231, 76, 60, 0.2);
+      border-left-color: var(--secondary);
+    }
+    
+    .form-group {
+      margin-bottom: 1.2rem;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--light);
+      font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+    
+    .form-group input, 
+    .form-group textarea, 
+    .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      transition: all 0.3s;
+    }
+    
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .password-wrapper {
+      position: relative;
+    }
+    
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+    
+    .toggle-password:hover {
+      color: var(--accent);
+    }
+    
+    .password-strength {
+      margin-top: 0.5rem;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    
+    .strength-meter {
+      height: 100%;
+      width: 0;
+      transition: width 0.3s, background-color 0.3s;
+    }
+    
+    button {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+    
+    button:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+    }
+    
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .back-link a {
+      color: var(--light);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .back-link a:hover {
+      color: var(--accent);
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .info-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent);
+    }
+    
+    .info-card h3 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .info-card p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+    
+    .dashboard-party {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid var(--accent);
+    }
+    
+    .dashboard-party img {
+      width: 70px;
+      height: 70px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    
+    .party-info {
+      font-size: 0.9rem;
+    }
+    
+    .party-info h3 {
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+      font-size: 1rem;
+    }
+    
+    .party-info p {
+      opacity: 0.8;
+      font-size: 0.85rem;
+      margin-bottom: 0.2rem;
+    }
+    
+    .party-info a {
+      color: var(--light);
+      text-decoration: none;
+    }
+    
+    /* Fixed Back Arrow */
+    .arrow-button {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      width: 45px;
+      height: 45px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      color: var(--primary);
+      font-size: 1.1rem;
+      z-index: 100;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .arrow-button:hover {
+      transform: scale(1.05);
+      background: var(--primary);
+      color: white;
+    }
+    
+    @media (max-width: 480px) {
+      .settings-container {
+        padding: 1.5rem;
+      }
+      
+      .tab {
+        padding: 0.7rem 1rem;
+      }
+      
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .dashboard-party {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .dashboard-party img {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .form-group input, 
+      .form-group textarea, 
+      .form-group select {
+        padding: 10px 12px;
+      }
+      
+      button {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="/admin-access-panel-03">
+    <button class="arrow-button" aria-label="Go back">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+  </a>
+  
+  <div class="settings-container">
+    <div class="header">
+      <h1><i class="fas fa-cogs"></i>Admin Settings</h1>
+      <p>Manage your gym's system configuration</p>
+    </div>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="password">Password</div>
+      <div class="tab" data-tab="factory">Factory Info</div>
+      <div class="tab" data-tab="dashboard">Dashboard</div>
+    </div>
+    
+    <% if (success) { %>
+      <div class="success"><i class="fas fa-check-circle"></i> <%= success %></div>
+    <% } %>
+    
+    <% if (error) { %>
+      <div class="error"><i class="fas fa-exclamation-circle"></i> <%= error %></div>
+    <% } %>
+    
+    <!-- Password Tab -->
+    <div class="tab-content active" id="password-tab">
+      <form method="POST" action="/settings">
+        <div class="form-group">
+          <label for="currentPassword">Current Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter current password" required>
+            <i class="fas fa-eye toggle-password" toggle="#currentPassword"></i>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="newPassword">New Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="newPassword" name="newPassword" placeholder="Create new password" required>
+            <i class="fas fa-eye toggle-password" toggle="#newPassword"></i>
+          </div>
+          <div class="password-strength">
+            <div class="strength-meter"></div>
+          </div>
+          <small style="display: block; margin-top: 5px; opacity: 0.7;">Password must be at least 8 characters with numbers and symbols</small>
+        </div>
+        
+        <button type="submit"><i class="fas fa-key"></i> Update Password</button>
+      </form>
+    </div>
+    
+    <!-- Factory Info Tab -->
+    <div class="tab-content" id="factory-tab">
+      <div class="info-grid">
+        <div class="info-card">
+          <h3><i class="fas fa-industry"></i> Factory Details</h3>
+          <p><strong>Name:</strong> Lorcan Solan.</p>
+          <p><strong>Location:</strong> Guelmim 6/8</p>
+        </div>
+        
+        <div class="info-card">
+          <h3><i class="fas fa-phone"></i> Contact</h3>
+          <p><strong>Phone:</strong> (212) 622-696643</p>
+          <p><strong>Email:</strong> mcdochvk@gmail.com</p>
+        </div>
+        
+        <div class="info-card">
+          <h3><i class="fas fa-calendar-alt"></i> Maintenance</h3>
+          <p><strong>Last Service:</strong> 15 May 2025</p>
+          <p><strong>Next Due:</strong> 15 November 2027</p>
+        </div>
+        
+        <div class="info-card">
+          <h3><i class="fas fa-id-card"></i> Technical</h3>
+          <p><strong>Serial No:</strong> PF-2023-0589</p>
+          <p><strong>Firmware:</strong> v2.5.1</p>
+        </div>
+      </div>
+      
+      <form>
+        <div class="form-group">
+          <label for="factory-notes">Factory Notes</label>
+          <textarea id="factory-notes" placeholder="Add any notes about factory equipment or maintenance"></textarea>
+        </div>
+        
+        <button type="button"><i class="fas fa-save"></i> Save Factory Info</button>
+      </form>
+    </div>
+    
+    <!-- Dashboard Tab -->
+    <div class="tab-content" id="dashboard-tab">
+      <div class="dashboard-party">
+        <img src="../images/home/photo_2025-04-30_10-43-52.jpg" alt="PowerFit Logo">
+        <div class="party-info">
+          <h3>PowerFit Gym System</h3>
+          <p>Version 2.5.1</p>
+          <p>© 2025 lorcan solan.</p>
+          <p>
+            <i class="fas fa-globe"></i>
+            <a href="https://lorcansite.vercel.app/">lorcansite.vercel.app/</a>
+          </p>
+        </div>
+      </div>
+      
+      <div class="back-link">
+        <a href="/admin-access-panel-03"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Password visibility toggle
+      document.querySelectorAll('.toggle-password').forEach(function(icon) {
+        icon.addEventListener('click', function() {
+          const target = document.querySelector(this.getAttribute('toggle'));
+          if (target.type === 'password') {
+            target.type = 'text';
+            this.classList.remove('fa-eye');
+            this.classList.add('fa-eye-slash');
+          } else {
+            target.type = 'password';
+            this.classList.remove('fa-eye-slash');
+            this.classList.add('fa-eye');
+          }
+        });
+      });
+      
+      // Password strength meter
+      const newPassword = document.getElementById('newPassword');
+      const strengthMeter = document.querySelector('.strength-meter');
+      
+      newPassword.addEventListener('input', function() {
+        const strength = calculatePasswordStrength(this.value);
+        strengthMeter.style.width = strength + '%';
+        strengthMeter.style.backgroundColor = 
+          strength < 30 ? '#e74c3c' : 
+          strength < 70 ? '#f39c12' : '#2ecc71';
+      });
+      
+      function calculatePasswordStrength(password) {
+        let strength = 0;
+        if (password.length > 0) strength += 10;
+        if (password.length > 4) strength += 20;
+        if (password.length > 8) strength += 30;
+        if (/[A-Z]/.test(password)) strength += 10;
+        if (/[0-9]/.test(password)) strength += 10;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+        return Math.min(strength, 100);
+      }
+      
+      // Tab switching
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          
+          document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

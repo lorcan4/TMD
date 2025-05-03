@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --dark-bg: #171819;
+            --card-bg: #2d2d2d;
+            --card-hover: #3d3d3d;
+            --text-light: #f8f9fa;
+            --danger: #dc3545;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 70px;
+        }
+        
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .arrow-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 1.2rem;
+            z-index: 100;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .arrow-button:hover {
+            transform: scale(1.1);
+            background: white;
+            color: var(--primary);
+        }
+        
+        .dashboard-header {
+            border-bottom: 1px solid #444;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .form-control, .form-select {
+            background-color: #3a3a3a;
+            border: 1px solid #4a4a4a;
+            color: white;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background-color: #4a4a4a;
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .nav-link {
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .nav-link:hover {
+            color: #3a56d4;
+        }
+    </style>
+</head>
+<body>
+    <a href="/dashboard-Admin03">
+        <button class="arrow-button" aria-label="Go back">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+    </a>
+
+    <div class="container py-4">
+        <div class="dashboard-header">
+            <h1 class="text-center"><i class="fas fa-dumbbell me-2"></i>Workout Schedule</h1>
+        </div>
+        
+        <div class="dashboard-card">
+            <ul class="nav justify-content-center mb-4">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/workSchedule">
+                        <i class="fas fa-calendar-alt me-1"></i> View Schedule
+                    </a>
+                </li>
+            </ul>
+
+            <form id="workoutForm">
+                <div class="mb-3">
+                    <label class="form-label">Workout Name</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Time</label>
+                    <select class="form-select" name="time" required>
+                        <option value="">Time period</option>
+                        <option value="Morning">Morning</option>
+                        <option value="Afternoon">Afternoon</option>
+                        <option value="Evening">Evening</option>
+                        <option value="Night">Night</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Day</label>
+                    <select class="form-select" name="day" required>
+                        <option value="">Select Day</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Time Range</label>
+                    <input type="text" class="form-control" name="timeRange" placeholder="e.g. 7:00 am - 9:00 am" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-plus-circle me-1"></i> Add Workout
+                </button>
+                
+                <hr class="my-4">
+                
+                <div class="text-center">
+                    <button id="clearDataBtn" class="btn btn-danger">
+                        <i class="fas fa-trash-alt me-1"></i> Delete All Workouts
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('workoutForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/workouts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert('Workout added successfully!');
+                    e.target.reset();
+                } else {
+                    alert('Failed to add workout');
+                }
+            } catch (error) {
+                console.error('Error adding workout:', error);
+                alert('Error adding workout');
+            }
+        });
+
+        document.getElementById('clearDataBtn').addEventListener('click', async () => {
+            if (confirm('Are you sure you want to delete all workouts?')) {
+                try {
+                    const response = await fetch('/api/workouts', { method: 'DELETE' });
+                    if (response.ok) {
+                        alert('All workouts deleted!');
+                    } else {
+                        alert('Failed to delete workouts');
+                    }
+                } catch (error) {
+                    console.error('Error deleting workouts:', error);
+                    alert('Error deleting workouts');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

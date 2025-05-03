@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Membership Plans</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/png" sizes="56x56"
+        href="../images/fav-icon/Black White Minimalist Professional Initial Logo.png">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --dark: #1b263b;
+            --light: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            background-image: url('../images//home/photo-1571019614242-c5c5dee9f50b.avif');
+            background-size: cover;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: rgb(255, 255, 255);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: wheat;
+            margin-bottom: 50px;
+            font-size: 1.1rem;
+        }
+
+        .plans-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .plan-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .plan-card.selected {
+            border: 3px solid var(--accent);
+        }
+
+        .plan-header {
+            padding: 25px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .plan-name {
+            font-size: 1.8rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            margin: 15px 0;
+            font-weight: 700;
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            font-weight: normal;
+        }
+
+        .plan-duration {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .plan-features {
+            padding: 25px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list i {
+            color: var(--accent);
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 30px;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .select-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .select-btn:hover {
+            background: var(--secondary);
+        }
+
+        .purchase-form {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            max-width: 600px;
+            margin: 40px auto 0;
+            display: none;
+            /* Initially hidden */
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--dark);
+        }
+
+        .selected-plan-info {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Choose Your Perfect Plan</h1>
+        <p class="subtitle">Select a membership to get started</p>
+
+        <div class="plans-container">
+            <!-- Basic Plan -->
+            <div class="plan-card" id="basic-card" onclick="selectPlan('basic')">
+                <div class="plan-header">
+                    <h2 class="plan-name">Free</h2>
+                    <div class="plan-price">$0<span>.00 MAD</span></div>
+                    <div class="plan-duration">per month</div>
+                </div>
+                <div class="plan-features">
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Full access to all gym equipment</li>
+                        <li><i class="fas fa-check"></i> Unlimited hours for 2 days</li>
+                        <li><i class="fas fa-check"></i> Free personal trainer consultation</li>
+                        <li><i class="fas fa-check"></i> Access to group fitness classes</li>
+                        <li><i class="fas fa-check"></i> Locker room and shower use</li>
+                    </ul>
+
+                </div>
+                <button class="select-btn">Select Plan</button>
+                <input type="radio" name="membership" value="basic" id="basic" style="display: none;">
+            </div>
+
+            <!-- Premium Plan (Popular) -->
+            <div class="plan-card" id="premium-card" onclick="selectPlan('premium')">
+                <div class="popular-badge">Most Popular</div>
+                <div class="plan-header" style="background: linear-gradient(135deg, #f72585, #b5179e);">
+                    <h2 class="plan-name">Starter</h2>
+                    <div class="plan-price">100<span>.00 MAD</span></div>
+                    <div class="plan-duration">per month</div>
+                </div>
+                <div class="plan-features">
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Open group Muay Thai classes</li>
+                        <li><i class="fas fa-check"></i> Professional trainers with combat experience</li>
+                        <li><i class="fas fa-check"></i> Strength & conditioning workouts</li>
+                        <li><i class="fas fa-check"></i> Suitable for all levels – beginners welcome</li>
+                        <li><i class="fas fa-check"></i> Dynamic environment with motivating community</li>
+                    </ul>
+                </div>
+                <button class="select-btn" style="background: #f72585;">Select Plan</button>
+                <input type="radio" name="membership" value="premium" id="premium" style="display: none;">
+            </div>
+
+            <!-- Family Plan -->
+            <div class="plan-card" id="family-card" onclick="selectPlan('family')">
+                <div class="plan-header" style="background: linear-gradient(135deg, #4cc9f0, #4895ef);">
+                    <h2 class="plan-name">Private</h2>
+                    <div class="plan-price">200<span>.00 MAD</span></div>
+                    <div class="plan-duration">per month</div>
+                </div>
+                <div class="plan-features">
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> One-on-one personalized training sessions</li>
+                        <li><i class="fas fa-check"></i> Custom fitness plans tailored to your goals</li>
+                        <li><i class="fas fa-check"></i> Flexible scheduling to fit your lifestyle</li>
+                        <li><i class="fas fa-check"></i> Nutritional guidance and progress tracking</li>
+                        <li><i class="fas fa-check"></i> Full attention from certified personal trainers</li>
+                    </ul>
+                </div>
+                <button class="select-btn" style="background: #4895ef;">Select Plan</button>
+                <input type="radio" name="membership" value="family" id="family" style="display: none;">
+            </div>
+        </div>
+
+        <div class="purchase-form" id="purchaseForm">
+            <h2 class="form-title">Complete Your Membership</h2>
+            <div class="selected-plan-info" id="selectedPlanInfo">
+                You've selected: <span id="planName">Starter</span> Plan - <span id="planPrice">$29.99/month</span>
+            </div>
+            <form id="checkoutForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="Address">Your Address</label>
+                    <input type="text" id="Address" name="Address" required>
+                </div>
+                <div class="form-group">
+                    <label for="City">Your City</label>
+                    <input type="text" id="City" name="City" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">PHone Number</label>
+                    <input type="number" id="phone" name="phone" required>
+                </div>
+
+                <button type="submit" class="submit-btn">Complete Purchase</button>
+            </form>
+            <h4 id="message"></h4>
+        </div>
+    </div>
+
+    <script>
+        // Select membership plan
+        function selectPlan(plan) {
+            // Update radio button
+            document.getElementById(plan).checked = true;
+
+            // Remove selected class from all cards
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Add selected class to chosen card
+            document.getElementById(`${plan}-card`).classList.add('selected');
+
+            // Update the form header with selected plan info
+            updateSelectedPlanInfo(plan);
+
+            // Show the form with animation
+            const form = document.getElementById('purchaseForm');
+            form.style.display = 'block';
+
+            // Scroll to form smoothly
+            form.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Update the selected plan information in the form
+        function updateSelectedPlanInfo(plan) {
+            const planNameElement = document.getElementById('planName');
+            const planPriceElement = document.getElementById('planPrice');
+
+            switch (plan) {
+                case 'basic':
+                    planNameElement.textContent = 'Starter';
+                    planPriceElement.textContent = '$29.99/month';
+                    break;
+                case 'premium':
+                    planNameElement.textContent = 'Premium';
+                    planPriceElement.textContent = '$59.99/month';
+                    break;
+                case 'family':
+                    planNameElement.textContent = 'Family';
+                    planPriceElement.textContent = '$89.99/month';
+                    break;
+            }
+        }
+        let message = document.getElementById("message")
+        // Form submission
+        document.getElementById('checkoutForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            message.textContent = "Waiting for response...";
+            message.style.color = "blue";
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                Address: document.getElementById('Address').value,
+                City: document.getElementById('City').value,
+                membership: document.querySelector('input[name="membership"]:checked').value,
+
+            };
+
+            try {
+                const response = await fetch('/purchase', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    //   alert('Purchase successful! Check your email for confirmation.');
+                    message.innerHTML = `<h4>${result.message}</h4>`;
+                    message.style.color = "green";
+                    // Redirect or clear form
+                    document.getElementById('checkoutForm').reset();
+                    // Reset selection to basic
+                    selectPlan('basic');
+                } else {
+                    // alert(`Error: ${result.message}`);
+                    message.innerHTML = `<h4>${result.message}</h4>`;
+                    message.style.color = "red";
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // alert('An error occurred. Please try again.');
+                message.innerHTML = `<h4>${result.error}</h4>`;
+                message.style.color = "red";
+            }
+        });
+    </script>
+</body>
+
+</html>
