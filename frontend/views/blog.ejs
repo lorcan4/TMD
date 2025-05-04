@@ -262,7 +262,7 @@
 								<% posts.forEach(post=> { %>
 									<div class="single-blog">
 										<div class="image-box">
-											<img src="<%= post.imageUrl %>" alt="<%= post.title %>" style="height: 500px;">
+											<img src="<%= post.imageUrl %>" alt="<%= post.title %>" >
 											<div class="overlay"> <a href="/post/<%= post._id %>" class="date">
 													<%= new Date(post.date).toLocaleDateString('en-US', { month: 'short' ,
 														day: 'numeric' , year: 'numeric' }) %>
